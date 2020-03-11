@@ -11,8 +11,10 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.ITutorias;
 
+
 public class Tutorias implements ITutorias {
 	
+private static final String NOMBRE_FICHERO_TUTORIAS = "datos/tutorias.dat";
 	
 	private List<Tutoria> coleccionTutorias;
 	
