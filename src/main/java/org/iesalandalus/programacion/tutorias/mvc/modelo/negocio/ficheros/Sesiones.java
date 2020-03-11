@@ -13,6 +13,7 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.ISesiones;
 
 public class Sesiones implements ISesiones {
 
+private static final String NOMBRE_FICHERO_SESIONES = "datos/sesiones.dat";
 	
 	private List<Sesion> coleccionSesiones;
 	
