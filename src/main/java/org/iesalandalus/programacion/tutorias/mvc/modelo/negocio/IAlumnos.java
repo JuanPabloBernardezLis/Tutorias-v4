@@ -18,4 +18,8 @@ public interface IAlumnos {
 
 	void borrar(Alumno alumno) throws OperationNotSupportedException;
 
+	void comenzar();
+
+	void terminar();
+
 }
