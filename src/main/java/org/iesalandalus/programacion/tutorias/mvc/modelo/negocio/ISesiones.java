@@ -21,4 +21,8 @@ public interface ISesiones {
 
 	void borrar(Sesion sesion) throws OperationNotSupportedException;
 
+	void comenzar();
+
+	void terminar();
+
 }
