@@ -44,6 +44,28 @@ public class Modelo implements IModelo {
 	}
 	
 	@Override
+	public void comenzar() {
+		alumnos.comenzar();
+		citas.comenzar();
+		profesores.comenzar();
+		sesiones.comenzar();
+		tutorias.comenzar();
+		
+	}
+
+	@Override
+	public void terminar() {
+		alumnos.terminar();
+		citas.terminar();
+		profesores.terminar();
+		sesiones.terminar();
+		tutorias.terminar();
+	}
+	
+	
+	
+	
+	@Override
 	public void insertar(Alumno alumno) throws OperationNotSupportedException {
 		if(alumno==null)
 			throw new NullPointerException("ERROR: No se puede insertar un alumno nulo.");

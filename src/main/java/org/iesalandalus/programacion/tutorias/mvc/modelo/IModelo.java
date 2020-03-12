@@ -60,4 +60,8 @@ public interface IModelo {
 
 	List<Cita> getCitas(Alumno alumno);
 
+	void comenzar();
+
+	void terminar();
+
 }
