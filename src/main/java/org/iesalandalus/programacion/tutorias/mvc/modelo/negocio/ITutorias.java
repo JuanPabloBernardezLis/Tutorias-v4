@@ -21,4 +21,8 @@ public interface ITutorias {
 
 	void borrar(Tutoria tutoria) throws OperationNotSupportedException;
 
+	void comenzar();
+
+	void terminar();
+
 }
