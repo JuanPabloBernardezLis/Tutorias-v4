@@ -24,4 +24,8 @@ public interface ICitas {
 
 	void borrar(Cita cita) throws OperationNotSupportedException;
 
+	void comenzar();
+
+	void terminar();
+
 }
