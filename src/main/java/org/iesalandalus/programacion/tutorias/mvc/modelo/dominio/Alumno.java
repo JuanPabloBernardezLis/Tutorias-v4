@@ -2,7 +2,9 @@ package org.iesalandalus.programacion.tutorias.mvc.modelo.dominio;
 
 import java.io.Serializable;
 
-public class Alumno implements Serializable {
+import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.ficheros.Alumnos;
+
+public class Alumno  implements Serializable {
 	
 	private static final String ER_NOMBRE = "[a-zA-ZáéíóúÁÉÍÓÚ]+(\\s+[a-zA-ZáéíóúÁÉÍÓÚ]+)+";
 	private static final String PREFIJO_EXPEDIENTE= "SP_";
@@ -12,8 +14,11 @@ public class Alumno implements Serializable {
 	private String correo;
 	private String expediente;
 		
+
 	
 
+	
+	
 
 	public Alumno(String nombre, String correo) {
 		
@@ -111,6 +116,13 @@ public class Alumno implements Serializable {
 			return expediente;
 		}
 
+		private void setUltimoIdentificador() {
+			
+			
+			ultimoIdentificador=Alumnos.getMaxId();
+			
+		}
+		
 
 		private static void incrementaUltimoIdentificador() {
 		ultimoIdentificador++;
@@ -134,13 +146,15 @@ public class Alumno implements Serializable {
 
 	private void setExpediente() {
 		
+		setUltimoIdentificador();
+		
 		incrementaUltimoIdentificador();
 		
 		this.expediente=PREFIJO_EXPEDIENTE + getIniciales() +"_"+ ultimoIdentificador;
 		
 		
 	}
-
+;
 
 	@Override
 	public int hashCode() {

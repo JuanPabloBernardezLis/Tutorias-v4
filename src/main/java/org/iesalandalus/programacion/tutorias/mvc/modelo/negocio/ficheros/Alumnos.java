@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.IAlumnos;
 public class Alumnos implements IAlumnos {
 	
 private static final String NOMBRE_FICHERO_ALUMNOS = "datos/alumnos.dat";	
+private static int maxId=0;
 	
 private List<Alumno> coleccionAlumnos;
 	
@@ -30,19 +32,35 @@ private List<Alumno> coleccionAlumnos;
 	}
 	
 	
+	public static int getMaxId() {
+		return maxId;
+	}
+
+
 	@Override
 	public void comenzar() {
+		
+		
+		
 		File ficheroAlumnos = new File(NOMBRE_FICHERO_ALUMNOS);
 		try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(ficheroAlumnos))) {
 			Alumno alumno = null;
 			do {
 				alumno = (Alumno) entrada.readObject();
 				insertar(alumno);
+				
+				int num=Integer.parseInt(alumno.getExpediente().substring(6));
+				if(num>maxId) {
+					maxId=num;
+				}	
+				
 			} while (alumno != null);
+			
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("No puedo encontrar la clase que tengo que leer.");
 		} catch (FileNotFoundException e) {
-			System.out.println("No puedo abrir el fihero de alumnos.");
+			System.out.println("No puedo abrir el fichero de alumnos.");
 		} catch (EOFException e) {
 			System.out.println("Fichero alumnos leído satisfactoriamente.");
 		} catch (IOException e) {
@@ -50,6 +68,9 @@ private List<Alumno> coleccionAlumnos;
 		} catch (OperationNotSupportedException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		
+		
 	}
 	
 	
@@ -57,14 +78,15 @@ private List<Alumno> coleccionAlumnos;
 	public void terminar() {
 		File ficheroAlumnos = new File(NOMBRE_FICHERO_ALUMNOS);
 		try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(ficheroAlumnos))){
-			for (Alumno alumno : coleccionAlumnos)
+			for (Alumno alumno : coleccionAlumnos) 
 				salida.writeObject(alumno);
 			System.out.println("Fichero alumnos escrito satisfactoriamente.");
 		} catch (FileNotFoundException e) {
 			System.out.println("No puedo crear el fichero de alumnos.");
 		} catch (IOException e) {
 			System.out.println("Error inesperado de Entrada/Salida.");
-		}
+		}	
+		
 	}
 	
 	
@@ -75,6 +97,28 @@ private List<Alumno> coleccionAlumnos;
 		return alumnosOrdenados;
 	}
 	
+	
+	/*public static int calculaUltimoId() {
+		
+		int ultimoId=0;
+		List<Integer> listaUltimoId=new ArrayList<>();
+		
+		if(!coleccionAlumnos.isEmpty()) {
+			
+			for (int i=0;i==coleccionAlumnos.size()-1;i++) {
+				
+				listaUltimoId.add(Integer.parseInt(coleccionAlumnos.get(i).getExpediente().substring(6)));
+				
+				}
+			Collections.sort(listaUltimoId);
+		
+		ultimoId=listaUltimoId.get(listaUltimoId.size()-1);
+		}
+		return ultimoId;
+		
+	}*/
+	
+
 	private List<Alumno> copiaProfundaAlumnos() {
 		List<Alumno> copiaAlumnos = new ArrayList<>();
 		for (Alumno alumno : coleccionAlumnos) {
@@ -87,6 +131,7 @@ private List<Alumno> coleccionAlumnos;
 		return coleccionAlumnos.size();
 	}
 	
+
 	@Override
 	public void insertar(Alumno alumno) throws OperationNotSupportedException {
 		if (alumno == null) {
@@ -95,6 +140,7 @@ private List<Alumno> coleccionAlumnos;
 		int indice = coleccionAlumnos.indexOf(alumno);
 		if (indice == -1) {
 			coleccionAlumnos.add(new Alumno(alumno));
+	
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese expediente.");
 		}		
@@ -113,6 +159,7 @@ private List<Alumno> coleccionAlumnos;
 			return new Alumno(coleccionAlumnos.get(indice));
 		}
 	}
+
 	
 	@Override
 	public void borrar(Alumno alumno) throws OperationNotSupportedException {
@@ -126,9 +173,5 @@ private List<Alumno> coleccionAlumnos;
 			coleccionAlumnos.remove(indice);
 		}
 	}
-
 	
-	
-	
-
 }

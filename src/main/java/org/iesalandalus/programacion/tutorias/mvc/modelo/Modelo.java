@@ -46,20 +46,20 @@ public class Modelo implements IModelo {
 	@Override
 	public void comenzar() {
 		alumnos.comenzar();
-		citas.comenzar();
 		profesores.comenzar();
-		sesiones.comenzar();
 		tutorias.comenzar();
+		sesiones.comenzar();
+		citas.comenzar();
 		
 	}
 
 	@Override
 	public void terminar() {
 		alumnos.terminar();
-		citas.terminar();
 		profesores.terminar();
-		sesiones.terminar();
 		tutorias.terminar();
+		sesiones.terminar();
+		citas.terminar();
 	}
 	
 	

@@ -10,7 +10,7 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Sesion;
 
 public class Cita implements Serializable {
 
-	public static final DateTimeFormatter FORMATO_HORA= DateTimeFormatter.ofPattern("hh:mm");
+	public static final DateTimeFormatter FORMATO_HORA= DateTimeFormatter.ofPattern("HH:mm");
 	private LocalTime hora;
 	
 	private Alumno alumno;
