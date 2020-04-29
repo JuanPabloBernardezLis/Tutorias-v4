@@ -6,10 +6,15 @@ import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Sesion implements Serializable {
 
@@ -135,17 +140,23 @@ public class Sesion implements Serializable {
 		
 		if(horaInicio.until(horaFin, ChronoUnit.MINUTES)%getMinutosDuracion()!=0)
 			throw new IllegalArgumentException("ERROR: Los minutos de duración no es divisor de los minutos establecidos para toda la sesión.");
-		
-		
-		
-		}
-			
-		//si horainicio = hora fin excepción. Si horainicio posterior a horafin exc. Múltiplos. Comprobar también con hora unicio y fin de clases (constantes)
-		
 	
+		}
+		
 	public static Sesion getSesionFicticia(Tutoria tutoria, LocalDate fecha){
 		return new Sesion(tutoria, fecha,HORA_COMIENZO_CLASES,HORA_FIN_CLASES,15);
 	}
+	
+	public LocalTime getHoraComienzoClases() {
+		return HORA_COMIENZO_CLASES;
+	}
+	
+	public LocalTime getHoraFinClases() {
+		return HORA_FIN_CLASES;
+	}
+	
+	
+	
 
 	@Override
 	public int hashCode() {

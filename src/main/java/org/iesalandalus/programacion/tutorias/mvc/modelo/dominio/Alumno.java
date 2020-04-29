@@ -9,7 +9,7 @@ public class Alumno  implements Serializable {
 	private static final String ER_NOMBRE = "[a-zA-ZáéíóúÁÉÍÓÚ]+(\\s+[a-zA-ZáéíóúÁÉÍÓÚ]+)+";
 	private static final String PREFIJO_EXPEDIENTE= "SP_";
 	private static final String ER_CORREO= ".+@[a-zA-Z]+\\.[a-zA-Z]+";
-	private static int ultimoIdentificador=0;
+	private static int ultimoIdentificador;
 	private String nombre;
 	private String correo;
 	private String expediente;
@@ -116,13 +116,8 @@ public class Alumno  implements Serializable {
 			return expediente;
 		}
 
-		private void setUltimoIdentificador() {
-			
-			
-			ultimoIdentificador=Alumnos.getMaxId();
-			
-		}
 		
+	
 
 		private static void incrementaUltimoIdentificador() {
 		ultimoIdentificador++;
@@ -146,13 +141,16 @@ public class Alumno  implements Serializable {
 
 	private void setExpediente() {
 		
-		setUltimoIdentificador();
+		if (ultimoIdentificador<=Alumnos.getMaxId()) {
+			
+			ultimoIdentificador=Alumnos.getMaxId()+1;	
+		}
 		
-		incrementaUltimoIdentificador();
 		
 		this.expediente=PREFIJO_EXPEDIENTE + getIniciales() +"_"+ ultimoIdentificador;
 		
-		
+		incrementaUltimoIdentificador();
+	
 	}
 ;
 

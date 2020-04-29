@@ -23,7 +23,7 @@ import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.IAlumnos;
 public class Alumnos implements IAlumnos {
 	
 private static final String NOMBRE_FICHERO_ALUMNOS = "datos/alumnos.dat";	
-private static int maxId=0;
+private static int maxId;
 	
 private List<Alumno> coleccionAlumnos;
 	
@@ -39,9 +39,7 @@ private List<Alumno> coleccionAlumnos;
 
 	@Override
 	public void comenzar() {
-		
-		
-		
+	
 		File ficheroAlumnos = new File(NOMBRE_FICHERO_ALUMNOS);
 		try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(ficheroAlumnos))) {
 			Alumno alumno = null;
@@ -98,25 +96,7 @@ private List<Alumno> coleccionAlumnos;
 	}
 	
 	
-	/*public static int calculaUltimoId() {
-		
-		int ultimoId=0;
-		List<Integer> listaUltimoId=new ArrayList<>();
-		
-		if(!coleccionAlumnos.isEmpty()) {
-			
-			for (int i=0;i==coleccionAlumnos.size()-1;i++) {
-				
-				listaUltimoId.add(Integer.parseInt(coleccionAlumnos.get(i).getExpediente().substring(6)));
-				
-				}
-			Collections.sort(listaUltimoId);
-		
-		ultimoId=listaUltimoId.get(listaUltimoId.size()-1);
-		}
-		return ultimoId;
-		
-	}*/
+	
 	
 
 	private List<Alumno> copiaProfundaAlumnos() {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="354.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladoresvista.ControladorAnadirSesion">
+   <children>
+      <GridPane alignment="CENTER" prefHeight="199.0" prefWidth="414.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="131.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="423.0" minWidth="10.0" prefWidth="242.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <VBox.margin>
+            <Insets right="35.0" top="35.0" />
+         </VBox.margin>
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="130.0" text="Inicio:" textAlignment="CENTER" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="131.0" text="Fecha:" />
+            <DatePicker fx:id="dPFecha" prefHeight="31.0" prefWidth="150.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="8.0" />
+               </GridPane.margin>
+            </DatePicker>
+            <ComboBox fx:id="cbHoraInicio" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="8.0" />
+               </GridPane.margin>
+            </ComboBox>
+            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="130.0" text="Fin:" textAlignment="CENTER" GridPane.rowIndex="2" />
+            <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="130.0" text="Duración:" textAlignment="CENTER" GridPane.rowIndex="3" />
+            <ComboBox fx:id="cbMinInicio" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="65.0" />
+               </GridPane.margin>
+            </ComboBox>
+            <ComboBox fx:id="cbHoraFin" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="8.0" />
+               </GridPane.margin>
+            </ComboBox>
+            <ComboBox fx:id="cbMinFin" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="65.0" />
+               </GridPane.margin>
+            </ComboBox>
+            <ComboBox fx:id="cbMinDuracion" prefHeight="31.0" prefWidth="77.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="8.0" />
+               </GridPane.margin>
+            </ComboBox>
+         </children>
+      </GridPane>
+      <HBox alignment="CENTER" prefHeight="124.0" prefWidth="449.0">
+         <children>
+            <Button id="btCancelarAnadirProfesor" fx:id="btCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar">
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </Button>
+            <Button id="btAceptarAnadirProfesor" fx:id="btAceptar" mnemonicParsing="false" onAction="#anadirSesion" text="Aceptar" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
