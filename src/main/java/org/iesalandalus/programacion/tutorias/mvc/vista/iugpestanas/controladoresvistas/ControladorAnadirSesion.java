@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvista;
+package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.naming.OperationNotSupportedException;
+
 import org.iesalandalus.programacion.tutorias.mvc.controlador.IControlador;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Sesion;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
+import org.iesalandalus.programacion.tutorias.mvc.modelo.negocio.ficheros.Sesiones;
 import org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.utilidades.Dialogos;
 
 import javafx.collections.FXCollections;
@@ -22,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -34,6 +38,10 @@ public class ControladorAnadirSesion implements Initializable {
 	public final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	public final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm");
 
+	
+	private ObservableList<Integer> minutos = FXCollections.observableArrayList();
+	private ObservableList<Integer> horas= FXCollections.observableArrayList();
+	
 	private Tutoria tutoria;
 
 	private IControlador controladorMVC;
@@ -41,14 +49,14 @@ public class ControladorAnadirSesion implements Initializable {
 
 	@FXML
 	private DatePicker dPFecha;
-	@FXML
-	private ComboBox<Integer> cbHoraInicio;
-	@FXML
-	private ComboBox<Integer> cbMinInicio;
-	@FXML
-	private ComboBox<Integer> cbHoraFin;
-	@FXML
-	private ComboBox<Integer> cbMinFin;
+    @FXML
+    private ComboBox<Integer> cbHoraInicio;
+    @FXML
+    private ComboBox<Integer> cbMinInicio;
+    @FXML
+    private ComboBox<Integer> cbHoraFin;
+    @FXML
+    private ComboBox<Integer> cbMinFin;
 	@FXML
 	private ComboBox<Integer> cbMinDuracion;
 	@FXML
@@ -58,101 +66,118 @@ public class ControladorAnadirSesion implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		cbHoraInicio.setItems(getHorasInicio());
-		cbMinInicio.setItems(getMinutosHorario());
-		cbHoraFin.setItems(getHorasFin());
-		cbMinFin.setItems(getMinutosHorario());
-		cbMinDuracion.setItems(getMinutosHorario());
-
+				
+		setHoras();
+		setMinutos();
+		reset();
+		
+		
+		//lvHoraInicio.getSelectionModel().selectedItemProperty().addListener((ob, ov, nv) -> setHorasFin(nv));
+		/*cbHoraInicio.setItems(horasInicioSesion);
+		cbMinInicio.setItems(minutosHorario);
+		cbHoraFin.setItems(horasInicioSesion);
+		cbMinFin.setItems(minutosHorario);
+		cbMinDuracion.setItems(minutosHorario);*/
+		
+		
+	}
+	
+	private void reset() {
+		cbHoraInicio.getSelectionModel().clearSelection();
+		cbHoraInicio.setValue(0);
+				
+		cbMinInicio.getSelectionModel().clearSelection();
+		cbMinInicio.setValue(0);
+		cbMinInicio.setItems(minutos);
+		
+		cbHoraFin.getSelectionModel().clearSelection();
+		cbHoraFin.setValue(0);
+		
+		cbMinFin.getSelectionModel().clearSelection();
+		cbMinFin.setValue(0);
+		cbMinFin.setItems(minutos);
+				
+		cbMinDuracion.getSelectionModel().clearSelection();
+		cbMinDuracion.setValue(0);
+		
+		cbMinDuracion.setItems(minutos);
+		dPFecha.setValue(null);
+		
 	}
 
 	public void setControladorMVC(IControlador controladorMVC) {
 		this.controladorMVC = controladorMVC;
 	}
 
-	public void setSesiones(ObservableList<Sesion> sesiones) {
-		this.sesiones = sesiones;
-	}
 
 	@FXML
 	void anadirSesion(ActionEvent event) {
 		Sesion sesion = null;
-		try {
+		try {		
 			sesion = getSesion();
 			controladorMVC.insertar(sesion);
-			sesiones.setAll(controladorMVC.getSesiones());
+			sesiones.setAll(controladorMVC.getSesiones(tutoria));
+			
+			System.out.println(sesion);
 			Stage propietario = ((Stage) btAceptar.getScene().getWindow());
 			Dialogos.mostrarDialogoInformacion("Añadir Sesión", "Sesión añadida satisfactoriamente", propietario);
-		} catch (Exception e) {
+			reset();
+			
+		} catch (Exception e) {			
 			Dialogos.mostrarDialogoError("Añadir Sesión", e.getMessage());
 		}
 	}
 
 	@FXML
 	void cancelar(ActionEvent event) {
+	
 		((Stage) btCancelar.getScene().getWindow()).close();
 	}
 
-	public void inicializa() {
-		cbHoraInicio.setItems(getHorasInicio());
-		cbMinInicio.setItems(getMinutosHorario());
-		cbHoraFin.setItems(getHorasFin());
-		cbMinFin.setItems(getMinutosHorario());
-		cbMinDuracion.setItems(getMinutosHorario());
-
+	public void inicializa(Tutoria tutoria,ObservableList<Sesion> sesiones) {
+		this.tutoria=tutoria;
+		this.sesiones=sesiones;
 	}
 
-	public void setTutoria(Tutoria tutoria) {
-		this.tutoria = tutoria;
-	}
 
-	public ObservableList<Integer> getHorasInicio() {
-		List<Integer> horasInicio = new ArrayList<>();
-		int i = 0;
-		int horaInicio;
+	public void setHoras() {
+		List<Integer> horasAL = new ArrayList<>();
+		int hora=0; //Intentar poner aquí el atributo HORA_COMIENZO_CLASES
 		do {
-			horaInicio = 0 + i;
-			i++;
-			horasInicio.add(horaInicio);
-		} while (horaInicio <= 23);
-		ObservableList<Integer> horasiInicioSesion = FXCollections.observableArrayList(horasInicio);
+			horasAL.add(hora);
+			hora++;
+			
+		} while (hora <= 23);//Intentar poner aquí el atributo HORA_FIN_CLASES
+		
+		horas.setAll(FXCollections.observableArrayList(horasAL));
+		cbHoraInicio.setItems(horas);
+		cbHoraFin.setItems(horas);
 
-		return horasiInicioSesion;
 	}
 
-	public ObservableList<Integer> getHorasFin() {
-		List<Integer> horasFin = new ArrayList<>();
-		int i = 0;
-		int horaFin;
+
+	public void setMinutos() {
+		
+		List<Integer> minutosAL = new ArrayList<>();
+				
+		int minuto=0;
 		do {
-			horaFin = 0 + i;
-			i++;
-			horasFin.add(horaFin);
-		} while (horaFin <= 23);
-		ObservableList<Integer> horasFinSesion = FXCollections.observableArrayList(horasFin);
+			minutosAL.add(minuto);
+			minuto=minuto+5;
+			
+		} while (minuto <= 59);
+	
+		minutos.setAll(FXCollections.observableArrayList(minutosAL));
 
-		return horasFinSesion;
 	}
 
-	public ObservableList<Integer> getMinutosHorario() {
-		List<Integer> minutos = new ArrayList<>();
-		int i = 0;
-		int minuto;
-		do {
-			minuto = 0 + i;
-			i++;
-			minutos.add(minuto);
-		} while (minuto <= 23);
-		ObservableList<Integer> minutosHorario = FXCollections.observableArrayList(minutos);
-
-		return minutosHorario;
-	}
 
 	private Sesion getSesion() {
 		LocalDate fecha = dPFecha.getValue();
 		horaInicio = LocalTime.of(cbHoraInicio.getValue(), cbMinInicio.getValue());
 		horaFin = LocalTime.of(cbHoraFin.getValue(), cbMinFin.getValue());
 		minutosDuracion = cbMinDuracion.getValue();
+		
 		return new Sesion(tutoria, fecha, horaInicio, horaFin, minutosDuracion);
 	}
 

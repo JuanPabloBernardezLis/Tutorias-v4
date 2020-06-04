@@ -45,9 +45,9 @@ private List<Alumno> coleccionAlumnos;
 			Alumno alumno = null;
 			do {
 				alumno = (Alumno) entrada.readObject();
-				insertar(alumno);
+				insertar(alumno);		
 				
-				int num=Integer.parseInt(alumno.getExpediente().substring(6));
+				int num=Integer.parseInt(alumno.getExpediente().substring(alumno.getExpediente().lastIndexOf("_")+1));
 				if(num>maxId) {
 					maxId=num;
 				}	

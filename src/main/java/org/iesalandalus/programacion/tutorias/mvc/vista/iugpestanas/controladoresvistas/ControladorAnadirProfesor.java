@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvista;
+package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas;
 
 
 
@@ -21,7 +21,7 @@ import javafx.stage.Stage;
 public class ControladorAnadirProfesor implements Initializable{
 
 		private static final String ER_NOMBRE = "[a-zA-ZáéíóúÁÉÍÓÚ]+(\\s+[a-zA-ZáéíóúÁÉÍÓÚ]+)+";
-		private static final String ER_DNI = "([0-9]{8})([A-Za-z])";
+		private static final String ER_DNI = "([0-9]{8})([A-Za-z])"; //"\\d{8}[A-Z]";
 		private static final String ER_CORREO = ".+@[a-zA-Z]+\\.[a-zA-Z]+";
 
 		private String nombre;
@@ -40,9 +40,9 @@ public class ControladorAnadirProfesor implements Initializable{
 	
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
-			tfNombreProfesor.textProperty().addListener((ob, ov, nv) -> compruebaCampoTexto(ER_NOMBRE, tfNombreProfesor));
-			tfCorreoProfesor.textProperty().addListener((ob, ov, nv) -> compruebaCampoTexto(ER_CORREO, tfCorreoProfesor));
-			tfDniProfesor.textProperty().addListener((ob, ov, nv) -> compruebaCampoTexto(ER_DNI, tfDniProfesor));
+			//tfNombreProfesor.textProperty().addListener((ob, ov, nv) -> compruebaCampoTexto(ER_NOMBRE, tfNombreProfesor));
+			//tfCorreoProfesor.textProperty().addListener((ob, ov, nv) -> compruebaCampoTexto(ER_CORREO, tfCorreoProfesor));
+			//tfDniProfesor.textProperty().addListener((ob, ov, nv) -> compruebaCampoTexto(ER_DNI, tfDniProfesor));
 		}
 		
 		public void setControladorMVC(IControlador controladorMVC) {
@@ -61,7 +61,7 @@ public class ControladorAnadirProfesor implements Initializable{
 		 Profesor profesor = null;
 			try {
 				profesor = getProfesor();
-				controladorMVC.insertar(profesor);
+				controladorMVC.insertar(profesor);			
 				profesores.setAll(controladorMVC.getProfesores());
 				Stage propietario = ((Stage) btAceptar.getScene().getWindow());
 				Dialogos.mostrarDialogoInformacion("Añadir Profesor", "Profesor añadido satisfactoriamente", propietario);
@@ -79,11 +79,11 @@ public class ControladorAnadirProfesor implements Initializable{
 	
 	    public void inicializa() {
 	    	tfNombreProfesor.setText("");
-	    	compruebaCampoTexto(ER_NOMBRE, tfNombreProfesor);
+	    	//compruebaCampoTexto(ER_NOMBRE, tfNombreProfesor);
 	    	tfCorreoProfesor.setText("");
-	    	compruebaCampoTexto(ER_CORREO, tfCorreoProfesor);
+	    	//compruebaCampoTexto(ER_CORREO, tfCorreoProfesor);
 	    	tfDniProfesor.setText("");
-	    	compruebaCampoTexto(ER_DNI, tfDniProfesor);
+	    	/*compruebaCampoTexto(ER_DNI, tfDniProfesor);*/
 	    }
 	
 	    private void compruebaCampoTexto(String er, TextField campoTexto) {	
@@ -99,9 +99,9 @@ public class ControladorAnadirProfesor implements Initializable{
 		private Profesor getProfesor() {
 			String nombre = tfNombreProfesor.getText();
 			String correo = tfCorreoProfesor.getText();
-			String dni = tfDniProfesor.getText();
+			String dni = tfDniProfesor.getCharacters().toString();
 			
-			return new Profesor(nombre, correo, dni);
+			return new Profesor(nombre, dni, correo);
 		}
 
 	

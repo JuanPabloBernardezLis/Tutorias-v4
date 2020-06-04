@@ -1,5 +1,6 @@
 package org.iesalandalus.programacion.tutorias.mvc.modelo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
@@ -100,9 +101,13 @@ public class Modelo implements IModelo {
 			throw new NullPointerException("ERROR: No se puede insertar una sesión nula.");
 		
 		Tutoria tutoriaSesion=tutorias.buscar(sesion.getTutoria());
-		
+	
 		if(tutoriaSesion==null)
 			throw new OperationNotSupportedException("ERROR: No existe la tutoría de esta sesión.");
+		
+		if(sesion.getFecha().isBefore(LocalDate.now())||sesion.getFecha().isEqual(LocalDate.now())) {
+			throw new IllegalArgumentException("ERROR: Las sesiones de deben planificar para fechas futuras.");	
+		}
 		
 		sesiones.insertar(new Sesion(tutoriaSesion, sesion.getFecha(),sesion.getHoraInicio(),sesion.getHoraFin(),sesion.getMinutosDuracion()));
 	}

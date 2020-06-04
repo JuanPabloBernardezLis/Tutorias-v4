@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="354.0" prefWidth="408.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladoresvista.ControladorAnadirSesion">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="408.0" stylesheets="@../estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas.ControladorAnadirSesion">
    <children>
-      <GridPane alignment="CENTER" prefHeight="199.0" prefWidth="414.0">
+      <GridPane alignment="CENTER" prefHeight="308.0" prefWidth="373.0" stylesheets="@../estilos.css">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="275.0" minWidth="10.0" prefWidth="131.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="423.0" minWidth="10.0" prefWidth="242.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="172.0" minHeight="10.0" prefHeight="119.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <VBox.margin>
             <Insets right="35.0" top="35.0" />
@@ -33,43 +34,62 @@
                   <Insets left="8.0" />
                </GridPane.margin>
             </DatePicker>
-            <ComboBox fx:id="cbHoraInicio" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="8.0" />
-               </GridPane.margin>
-            </ComboBox>
             <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="130.0" text="Fin:" textAlignment="CENTER" GridPane.rowIndex="2" />
             <Label alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="21.0" prefWidth="130.0" text="Duración:" textAlignment="CENTER" GridPane.rowIndex="3" />
-            <ComboBox fx:id="cbMinInicio" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets left="65.0" />
-               </GridPane.margin>
-            </ComboBox>
-            <ComboBox fx:id="cbHoraFin" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="8.0" />
-               </GridPane.margin>
-            </ComboBox>
-            <ComboBox fx:id="cbMinFin" prefHeight="31.0" prefWidth="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets left="65.0" />
-               </GridPane.margin>
-            </ComboBox>
             <ComboBox fx:id="cbMinDuracion" prefHeight="31.0" prefWidth="77.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="8.0" />
                </GridPane.margin>
             </ComboBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="242.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="8.0" top="8.0" />
+               </GridPane.margin>
+               <children>
+                  <ComboBox fx:id="cbHoraInicio" prefHeight="26.0" prefWidth="79.0">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <Label text=":" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbMinInicio" prefHeight="26.0" prefWidth="78.0" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="152.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="8.0" top="8.0" />
+               </GridPane.margin>
+               <children>
+                  <ComboBox fx:id="cbHoraFin" prefHeight="26.0" prefWidth="79.0">
+                     <HBox.margin>
+                        <Insets left="8.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <Label text=":" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbMinFin" prefHeight="26.0" prefWidth="79.0" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
-      <HBox alignment="CENTER" prefHeight="124.0" prefWidth="449.0">
+      <HBox alignment="CENTER" prefHeight="47.0" prefWidth="408.0" stylesheets="@../estilos.css">
          <children>
-            <Button id="btCancelarAnadirProfesor" fx:id="btCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar">
+            <Button id="btAceptar" fx:id="btAceptar" mnemonicParsing="false" onAction="#anadirSesion" stylesheets="@../estilos.css" text="Aceptar">
                <HBox.margin>
                   <Insets right="50.0" />
+               </HBox.margin></Button>
+            <Button id="btCancelar" fx:id="btCancelar" mnemonicParsing="false" onAction="#cancelar" stylesheets="@../estilos.css" text="Cancelar">
+               <HBox.margin>
+                  <Insets />
                </HBox.margin>
             </Button>
-            <Button id="btAceptarAnadirProfesor" fx:id="btAceptar" mnemonicParsing="false" onAction="#anadirSesion" text="Aceptar" />
          </children>
       </HBox>
    </children>

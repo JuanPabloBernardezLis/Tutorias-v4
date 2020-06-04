@@ -1,8 +1,11 @@
-package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvista;
+package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -23,6 +26,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,11 +42,8 @@ public class ControladorVentanaPrincipal implements Initializable {
 	public static final DateTimeFormatter FORMATO_HORA=DateTimeFormatter.ofPattern("HH:mm");
 	private static final String BORRAR_PROFESOR = "Borrar Profesor";
 	private static final String BORRAR_ALUMNO = "Borrar Alumno";
-	private static final String BORRAR_TUTORIA = "Borrar Tutoría";
-	private static final String BORRAR_SESION = "Borrar Sesión";
 	private static final String BORRAR_CITA = "Borrar Cita";
-	private static final String RESERVA_ANULADA_OK = "Reserva anulada satisfactoriamente";
-	private static final String SEGURO_ANULAR_RESERVA = "¿Estás seguro de que quieres anular la reserva?";
+	final String ANADIR_SESION = "Añadir sesión";
 	
 	
 	private IControlador controladorMVC;
@@ -58,7 +61,44 @@ public class ControladorVentanaPrincipal implements Initializable {
 	public void setControladorMVC(IControlador controladorMVC) {
 		this.controladorMVC = controladorMVC;
 	}
+
 	
+	@FXML
+	private Menu mHelp;
+	@FXML
+	private MenuItem miAcercaDe;
+	
+	@FXML
+	private Menu mFile;
+	@FXML
+	private MenuItem miSalir;
+	   
+	   
+	@FXML private ContextMenu cmAlumnos;
+	@FXML private MenuItem miAnadirAlumno;
+	@FXML private MenuItem miAnadirCitaAlumno;
+	
+	@FXML private ContextMenu cmCitasAlumno;
+	@FXML private MenuItem miBorrarCitaAlumno;
+	 
+	@FXML private ContextMenu cmProfesores;
+	@FXML private MenuItem miAnadirProfesor;
+	@FXML private MenuItem miAnadirTutoria;
+	@FXML private MenuItem miBorrarProfesor;
+	
+	@FXML private ContextMenu cmTutorias;
+	@FXML private MenuItem miBorrarTutoria;
+    @FXML private MenuItem miAnadirSesion;
+    
+    @FXML private ContextMenu cmSesiones;
+	@FXML private MenuItem miAnadirCita;
+    @FXML private MenuItem miBorrarSesion;
+    
+    @FXML private ContextMenu cmCitasSesion;
+    @FXML private MenuItem miBorrarCita;
+   
+    
+    
 	@FXML private TableView<Alumno> tvAlumnos;
 	@FXML private TableColumn<Alumno, String> tcExpediente;
 	@FXML private TableColumn<Alumno, String> tcNombreAlumno;
@@ -102,6 +142,7 @@ public class ControladorVentanaPrincipal implements Initializable {
 	
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    	    	
     	tcExpediente.setCellValueFactory(alumno -> new SimpleStringProperty(alumno.getValue().getExpediente()));
     	tcNombreAlumno.setCellValueFactory(alumno -> new SimpleStringProperty(alumno.getValue().getNombre()));
     	tcCorreoAlumno.setCellValueFactory(alumno -> new SimpleStringProperty(alumno.getValue().getCorreo()));
@@ -200,12 +241,25 @@ public class ControladorVentanaPrincipal implements Initializable {
  
     @FXML
     void anadirTutoria(ActionEvent event)  throws IOException  {
-    	crearAnadirTutoria();
-    	anadirTutoria.showAndWait();
+    	final String ANADIR_TUTORIA="Añadir tutoría";
+    	Profesor profesor=tvProfesores.getSelectionModel().getSelectedItem();
+    	if(profesor!=null) {
+    		String nombre=Dialogos.mostrarDialogoTexto(ANADIR_TUTORIA, "Nombre");
+    		if(nombre!=null) {
+    			try {
+    				controladorMVC.insertar(new Tutoria(profesor,nombre));
+    				tutorias.setAll(controladorMVC.getTutorias(profesor));
+    				Dialogos.mostrarDialogoInformacion(ANADIR_TUTORIA, "Tutoría creada satisfactoriamente");
+    			}catch(Exception e){
+    				Dialogos.mostrarDialogoError(ANADIR_TUTORIA, e.getMessage());	
+    			}
+    		}
+    	}
     }
     
 	@FXML
 	void borrarTutoria(ActionEvent event) {
+		final String BORRAR_TUTORIA = "Borrar Tutoría";
 		Tutoria tutoria = null;
 		try {
 			tutoria = tvTutorias.getSelectionModel().getSelectedItem();
@@ -213,6 +267,7 @@ public class ControladorVentanaPrincipal implements Initializable {
 					"¿Estás seguro de que quieres borrar la tutoría?", null)) {
 				controladorMVC.borrar(tutoria);
 				tutorias.remove(tutoria);
+				sesiones.setAll(FXCollections.observableArrayList());
 				Dialogos.mostrarDialogoInformacion(BORRAR_TUTORIA, "Tutoría borrada satisfactoriamente");
 			}
 		} catch (Exception e) {
@@ -222,12 +277,17 @@ public class ControladorVentanaPrincipal implements Initializable {
 
 	@FXML
 	void anadirSesion(ActionEvent event) throws IOException {
+		Tutoria tutoria = tvTutorias.getSelectionModel().getSelectedItem();
+		if(tutoria!=null) {
 		crearAnadirSesion();
 		anadirSesion.showAndWait();
+		}
 	}
 
 	@FXML
 	void borrarSesion(ActionEvent event) {
+
+		final String BORRAR_SESION = "Borrar Sesión";
 		Sesion sesion = null;
 		try {
 			sesion = tvSesiones.getSelectionModel().getSelectedItem();
@@ -244,9 +304,13 @@ public class ControladorVentanaPrincipal implements Initializable {
 
 	@FXML
 	void anadirCitaSesion(ActionEvent event) throws IOException {
+		Sesion sesion = tvSesiones.getSelectionModel().getSelectedItem();
+		if(sesion!=null) {
 		crearAnadirCitaSesion();
 		anadirCitaSesion.showAndWait();
+		}
 	}
+	
    
 	@FXML
 	void borrarCitaSesion(ActionEvent event) {
@@ -254,7 +318,7 @@ public class ControladorVentanaPrincipal implements Initializable {
 		try {
 			cita = tvCitasSesion.getSelectionModel().getSelectedItem();
 			if (cita != null && Dialogos.mostrarDialogoConfirmacion(BORRAR_CITA,
-					"¿Estás seguro de que quieres borrar la sesión?", null)) {
+					"¿Estás seguro de que quieres borrar la cita?", null)) {
 				controladorMVC.borrar(cita);
 				citasSesion.remove(cita);
 				Dialogos.mostrarDialogoInformacion(BORRAR_CITA, "Cita borrada satisfactoriamente");
@@ -266,8 +330,11 @@ public class ControladorVentanaPrincipal implements Initializable {
 
 	@FXML
 	void anadirCitaAlumno(ActionEvent event) throws IOException {
+		Alumno alumno = tvAlumnos.getSelectionModel().getSelectedItem();
+		if(alumno!=null) {
 		crearAnadirCitaAlumno();
 		anadirCitaAlumno.showAndWait();
+		}
 	}
    
 	@FXML
@@ -276,9 +343,9 @@ public class ControladorVentanaPrincipal implements Initializable {
 		try {
 			cita = tvCitasAlumno.getSelectionModel().getSelectedItem();
 			if (cita != null && Dialogos.mostrarDialogoConfirmacion(BORRAR_CITA,
-					"¿Estás seguro de que quieres borrar la sesión?", null)) {
+					"¿Estás seguro de que quieres borrar la cita?", null)) {
 				controladorMVC.borrar(cita);
-				citasSesion.remove(cita);
+				citasAlumno.remove(cita);
 				Dialogos.mostrarDialogoInformacion(BORRAR_CITA, "Cita borrada satisfactoriamente");
 			}
 		} catch (Exception e) {
@@ -322,48 +389,33 @@ public class ControladorVentanaPrincipal implements Initializable {
 			cAnadirAlumno.inicializa();
 		}
 	}
-	
-	private void crearAnadirTutoria() throws IOException {
-		Profesor profesor=tvProfesores.getSelectionModel().getSelectedItem();
-		if (anadirTutoria == null) {
-			anadirTutoria = new Stage();
-			FXMLLoader cargadorAnadirTutoria = new FXMLLoader(getClass().getResource("../vistas/AnadirTutoria.fxml"));
-			VBox raizAnadirTutoria = cargadorAnadirTutoria.load();
-			cAnadirTutoria = cargadorAnadirTutoria.getController();
-			cAnadirTutoria.setControladorMVC(controladorMVC);
-			cAnadirTutoria.setProfesor(profesor);
-			cAnadirTutoria.setTutorias(tutorias);
-			cAnadirTutoria.inicializa();
-			Scene escenaAnadirTutoria = new Scene(raizAnadirTutoria);
-			anadirTutoria.setTitle("Añadir tutoría");
-			anadirTutoria.initModality(Modality.APPLICATION_MODAL);
-			anadirTutoria.setScene(escenaAnadirTutoria);
 
-		} else {
-			cAnadirTutoria.inicializa();
-		}
-	}
-	
+
 	private void crearAnadirSesion() throws IOException {
-		Tutoria tutoria=tvTutorias.getSelectionModel().getSelectedItem();
-			if (anadirSesion == null) {
+		Tutoria tutoria = tvTutorias.getSelectionModel().getSelectedItem();
+		if (anadirSesion == null) {
 			anadirSesion = new Stage();
 			FXMLLoader cargadorAnadirSesion = new FXMLLoader(getClass().getResource("../vistas/AnadirSesion.fxml"));
 			VBox raizAnadirSesion = cargadorAnadirSesion.load();
 			cAnadirSesion = cargadorAnadirSesion.getController();
 			cAnadirSesion.setControladorMVC(controladorMVC);
-			cAnadirSesion.setTutoria(tutoria);
-			cAnadirSesion.setSesiones(sesiones);
-			cAnadirSesion.inicializa();
-			Scene escenaAnadirSesion=new Scene (raizAnadirSesion);
+			//cAnadirSesion.setTutoria(tutoria);
+			//cAnadirSesion.setSesiones(sesiones);
+			cAnadirSesion.inicializa(tutoria, sesiones);
+			Scene escenaAnadirSesion = new Scene(raizAnadirSesion);
 			anadirSesion.setTitle("Añadir Sesion");
 			anadirSesion.initModality(Modality.APPLICATION_MODAL);
 			anadirSesion.setScene(escenaAnadirSesion);
 
 		} else {
-			cAnadirSesion.inicializa();
+			cAnadirSesion.inicializa(tutoria, sesiones);
 		}
+
 	}
+		
+		
+		
+		
 
 	private void crearAnadirCitaSesion() throws IOException {
 		Sesion sesion = tvSesiones.getSelectionModel().getSelectedItem();
@@ -387,24 +439,25 @@ public class ControladorVentanaPrincipal implements Initializable {
 	private void crearAnadirCitaAlumno() throws IOException {
 		Alumno alumno = tvAlumnos.getSelectionModel().getSelectedItem();
 		if (anadirCitaAlumno == null) {
-			anadirCitaSesion = new Stage();
+			anadirCitaAlumno = new Stage();
 			FXMLLoader cargadorAnadirCitaAlumno = new FXMLLoader(getClass().getResource("../vistas/AnadirCitaAlumno.fxml"));
 			VBox raizAnadirCitaAlumno = cargadorAnadirCitaAlumno.load();
 			cAnadirCitaAlumno = cargadorAnadirCitaAlumno.getController();
 			cAnadirCitaAlumno.setControladorMVC(controladorMVC);
-			cAnadirCitaAlumno.inicializa(tutorias, citasAlumno, alumno);
+			cAnadirCitaAlumno.inicializa(tutorias, sesiones, alumno, citasAlumno);
 			Scene escenaAnadirCitaAlumno=new Scene (raizAnadirCitaAlumno);
 			anadirCitaAlumno.setTitle("Añadir Cita");
 			anadirCitaAlumno.initModality(Modality.APPLICATION_MODAL);
 			anadirCitaAlumno.setScene(escenaAnadirCitaAlumno);
 
 		} else {
-			cAnadirCitaAlumno.inicializa(tutorias, citasAlumno, alumno);
+			cAnadirCitaAlumno.inicializa(tutorias, sesiones, alumno, citasAlumno);
 		}
 	} 
 	
     public void mostrarCitasAlumno(Alumno alumno) {
-    	try {
+    	
+     	try {
     		if (alumno != null) {
     			citasAlumno.setAll(controladorMVC.getCitas(alumno));
     		}
@@ -413,20 +466,23 @@ public class ControladorVentanaPrincipal implements Initializable {
 		}
     }
 
-    public void mostrarTutoriasProfesor(Profesor profesor) {
-    	try {
-    		if (profesor != null) {
-    			tutorias.setAll(controladorMVC.getTutorias(profesor));
-    		}
+	public void mostrarTutoriasProfesor(Profesor profesor) {
+		try {
+			if (profesor != null) {
+				tutorias.setAll(controladorMVC.getTutorias(profesor));
+				sesiones.setAll(FXCollections.observableArrayList());
+				citasSesion.setAll(FXCollections.observableArrayList());
+			}
 		} catch (IllegalArgumentException e) {
 			tutorias.setAll(FXCollections.observableArrayList());
 		}
-    }
+	}
     
     public void mostrarSesionesTutoria(Tutoria tutoria) {
     	try {
     		if (tutoria != null) {
     			sesiones.setAll(controladorMVC.getSesiones(tutoria));
+    			citasSesion.setAll(FXCollections.observableArrayList());
     		}
 		} catch (IllegalArgumentException e) {
 			sesiones.setAll(FXCollections.observableArrayList());
@@ -442,7 +498,7 @@ public class ControladorVentanaPrincipal implements Initializable {
 			citasSesion.setAll(FXCollections.observableArrayList());
 		}
     }
-    
+	
  
     
 }

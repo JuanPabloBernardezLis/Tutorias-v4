@@ -5,59 +5,67 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="858.0" prefWidth="823.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladoresvista.ControladorVentanaPrincipal">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="858.0" prefWidth="823.0" stylesheets="@../estilos.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas.ControladorVentanaPrincipal">
    <children>
-      <MenuBar prefHeight="7.0" prefWidth="901.0">
+      <MenuBar prefHeight="7.0" prefWidth="901.0" stylesheets="@../estilos.css">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu fx:id="mFile" mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Salir" />
+              <MenuItem fx:id="miSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu fx:id="mHelp" mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="Acerca de" />
+              <MenuItem fx:id="miAcercaDe" mnemonicParsing="false" onAction="#acercaDe" text="Acerca de" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
-      <TabPane prefHeight="836.0" prefWidth="911.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="836.0" prefWidth="911.0" stylesheets="@../estilos.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Alumnos">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="804.0" prefWidth="911.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="804.0" prefWidth="911.0" stylesheets="@../estilos.css">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="788.0" prefWidth="823.0" spacing="10.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="748.0" prefWidth="823.0" spacing="10.0">
                            <children>
                               <Label text="Listado de alumnos" />
-                              <TableView id="tVListadoAlumnos" fx:id="tvAlumnos" prefHeight="329.0" prefWidth="803.0">
+                              <TableView id="tVListadoAlumnos" fx:id="tvAlumnos" prefHeight="329.0" prefWidth="837.0">
                                 <columns>
-                                  <TableColumn fx:id="tcExpediente" prefWidth="143.0" text="Expediente" />
-                                  <TableColumn fx:id="tcNombreAlumno" prefWidth="477.0" text="Nombre" />
-                                    <TableColumn fx:id="tcCorreoAlumno" prefWidth="182.0" text="Correo" />
+                                  <TableColumn fx:id="tcExpediente" prefWidth="177.0" resizable="false" text="Expediente" />
+                                  <TableColumn fx:id="tcNombreAlumno" prefWidth="373.0" resizable="false" text="Nombre" />
+                                    <TableColumn fx:id="tcCorreoAlumno" minWidth="0.0" prefWidth="233.0" resizable="false" text="Correo" />
                                 </columns>
                                  <contextMenu>
-                                    <ContextMenu fx:id="cMAlumnos">
+                                    <ContextMenu fx:id="cmAlumnos">
                                       <items>
                                         <MenuItem fx:id="mIAnadirAlumno" mnemonicParsing="false" onAction="#anadirAlumno" text="Añadir alumno" />
-                                          <MenuItem fx:id="mIBuscarAlumno" mnemonicParsing="false" onAction="#borrarAlumno" text="Borrar alumno" />
+                                          <MenuItem fx:id="miBorrarAlumno" mnemonicParsing="false" onAction="#borrarAlumno" text="Borrar alumno" />
+                                          <MenuItem fx:id="miAnadirCitaAlumno" mnemonicParsing="false" onAction="#anadirCitaAlumno" text="Añadir cita" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
+                                 <VBox.margin>
+                                    <Insets left="8.0" right="8.0" />
+                                 </VBox.margin>
                               </TableView>
                               <Label text="Citas del alumno" />
-                              <TableView fx:id="tvCitasAlumno" prefHeight="415.0" prefWidth="803.0">
+                              <TableView fx:id="tvCitasAlumno" prefHeight="318.0" prefWidth="803.0">
                                  <columns>
-                                    <TableColumn fx:id="tcFechaCitaAlumno" prefWidth="230.0" text="Fecha" />
-                                    <TableColumn fx:id="tcHoraCitaAlumno" prefWidth="572.0" text="Hora" />
+                                    <TableColumn fx:id="tcFechaCitaAlumno" prefWidth="221.0" resizable="false" text="Fecha" />
+                                    <TableColumn fx:id="tcHoraCitaAlumno" prefWidth="224.0" resizable="false" text="Hora" />
+                                    <TableColumn fx:id="tcProfesorCitaAlumno" prefWidth="339.0" resizable="false" text="Profesor" />
                                  </columns>
                                  <contextMenu>
-                                    <ContextMenu>
+                                    <ContextMenu fx:id="cmCitasAlumno">
                                       <items>
-                                        <MenuItem fx:id="miAnadirCitaAlumno" mnemonicParsing="false" onAction="#anadirCitaAlumno" text="Añadir cita" />
+                                          <MenuItem fx:id="miBorrarCitaAlumno" mnemonicParsing="false" onAction="#borrarCitaAlumno" text="Borrar Cita" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
+                                 <VBox.margin>
+                                    <Insets left="8.0" right="8.0" />
+                                 </VBox.margin>
                               </TableView>
                            </children>
                            <padding>
@@ -70,70 +78,83 @@
           </Tab>
           <Tab text="Profesores">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="835.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="835.0" stylesheets="@../estilos.css">
                      <children>
-                        <VBox alignment="TOP_CENTER" layoutY="1.0" prefHeight="785.0" prefWidth="823.0" spacing="10.0">
+                        <VBox alignment="TOP_CENTER" layoutY="1.0" prefHeight="746.0" prefWidth="823.0" spacing="10.0">
                            <children>
                               <Label text="Listado de profesores" />
-                              <TableView fx:id="tvProfesores" prefHeight="404.0" prefWidth="770.0">
+                              <TableView fx:id="tvProfesores" prefHeight="467.0" prefWidth="778.0">
                                  <columns>
-                                    <TableColumn fx:id="tcDniProfesor" prefWidth="147.0" text="DNI" />
-                                    <TableColumn fx:id="tcNombreProfesor" prefWidth="499.0" text="Nombre" />
-                                    <TableColumn fx:id="tcCorreoProfesor" prefWidth="156.0" text="Correo" />
+                                    <TableColumn fx:id="tcDniProfesor" prefWidth="164.0" resizable="false" text="DNI" />
+                                    <TableColumn fx:id="tcNombreProfesor" prefWidth="383.0" resizable="false" text="Nombre" />
+                                    <TableColumn fx:id="tcCorreoProfesor" prefWidth="236.0" resizable="false" text="Correo" />
                                  </columns>
                                  <contextMenu>
-                                    <ContextMenu fx:id="cMProfesores">
+                                    <ContextMenu fx:id="cmProfesores">
                                       <items>
-                                        <MenuItem fx:id="mIAnadirProfesor" mnemonicParsing="false" text="Añadir tutoría" />
-                                          <MenuItem fx:id="mIBorrarProfesor" mnemonicParsing="false" text="Borrar profesor" />
+                                          <MenuItem fx:id="miAnadirProfesor" mnemonicParsing="false" onAction="#anadirProfesor" text="Añadir profesor" />
+                                        <MenuItem fx:id="mIAnadirTutoria" mnemonicParsing="false" onAction="#anadirTutoria" text="Añadir tutoría" />
+                                          <MenuItem fx:id="mIBorrarProfesor" mnemonicParsing="false" onAction="#borrarProfesor" text="Borrar profesor" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
+                                 <VBox.margin>
+                                    <Insets left="8.0" right="8.0" />
+                                 </VBox.margin>
                               </TableView>
                               <Label text="Tutorías del profesor" />
                               <TableView id="tVTutoriaProfesor" fx:id="tvTutorias" prefHeight="443.0" prefWidth="803.0">
                                  <columns>
-                                    <TableColumn fx:id="tcNombreTutoria" minWidth="0.0" prefWidth="796.0" text="Nombre" />
+                                    <TableColumn fx:id="tcNombreTutoria" minWidth="0.0" prefWidth="784.0" resizable="false" text="Tutorías" />
                                  </columns>
                                  <contextMenu>
-                                    <ContextMenu fx:id="cMTutorias">
+                                    <ContextMenu fx:id="cmTutorias">
                                       <items>
-                                        <MenuItem fx:id="mIAnadirTutoria" mnemonicParsing="false" text="Añadir seión" />
-                                          <MenuItem fx:id="mIBorrarTutoria" mnemonicParsing="false" text="Borrar tutoría" />
+                                        <MenuItem fx:id="mIAnadirSesion" mnemonicParsing="false" onAction="#anadirSesion" text="Añadir sesión" />
+                                          <MenuItem fx:id="mIBorrarTutoria" mnemonicParsing="false" onAction="#borrarTutoria" text="Borrar tutoría" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
+                                 <VBox.margin>
+                                    <Insets left="8.0" right="8.0" />
+                                 </VBox.margin>
                               </TableView>
                               <Label text="Sesiones de la tutoría" />
-                              <TableView id="tVSesiones" fx:id="tvSesiones" prefHeight="415.0" prefWidth="881.0">
+                              <TableView id="tVSesiones" fx:id="tvSesiones" prefHeight="460.0" prefWidth="778.0">
                                  <columns>
-                                    <TableColumn fx:id="tcFechaSesion" prefWidth="157.0" text="Fecha" />
-                                    <TableColumn fx:id="tcInicioSesion" prefWidth="126.0" text="Inicio" />
-                                    <TableColumn fx:id="tcFinSesion" prefWidth="319.0" text="Fin" />
-                                    <TableColumn id="cDuracionSesion" fx:id="tcDuracionSesion" prefWidth="200.0" text="Duración" />
+                                    <TableColumn fx:id="tcFechaSesion" prefWidth="172.0" resizable="false" text="Fecha" />
+                                    <TableColumn fx:id="tcInicioSesion" prefWidth="173.0" resizable="false" text="Inicio" />
+                                    <TableColumn fx:id="tcFinSesion" prefWidth="229.0" resizable="false" text="Fin" />
+                                    <TableColumn id="cDuracionSesion" fx:id="tcDuracionSesion" prefWidth="210.0" resizable="false" text="Duración" />
                                  </columns>
                                  <contextMenu>
-                                    <ContextMenu>
+                                    <ContextMenu fx:id="cmSesiones">
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Añadir cita" />
-                                          <MenuItem mnemonicParsing="false" text="Borrar sesión" />
+                                        <MenuItem fx:id="miAnadirCita" mnemonicParsing="false" onAction="#anadirCitaSesion" text="Añadir cita" />
+                                          <MenuItem fx:id="miBorrarSesion" mnemonicParsing="false" onAction="#borrarSesion" text="Borrar sesión" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
+                                 <VBox.margin>
+                                    <Insets left="8.0" right="8.0" />
+                                 </VBox.margin>
                               </TableView>
                               <Label text="Citas de la sesión" />
-                              <TableView fx:id="tvCitas" prefHeight="391.0" prefWidth="803.0">
+                              <TableView fx:id="tvCitasSesion" prefHeight="476.0" prefWidth="794.0">
                                  <columns>
-                                    <TableColumn fx:id="tcHoraCitaSesion" prefWidth="249.0" text="Hora" />
-                                    <TableColumn fx:id="tcAlumnoCitaSesion" prefWidth="553.0" text="Alumno" />
+                                    <TableColumn fx:id="tcHoraCitaSesion" prefWidth="222.0" text="Hora" />
+                                    <TableColumn fx:id="tcAlumnoCitaSesion" prefWidth="562.0" text="Alumno" />
                                  </columns>
                                  <contextMenu>
-                                    <ContextMenu>
+                                    <ContextMenu fx:id="cmCitasSesion">
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Borrar cita" />
+                                        <MenuItem fx:id="miBorrarCita" mnemonicParsing="false" onAction="#borrarCitaSesion" text="Borrar cita" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
+                                 <VBox.margin>
+                                    <Insets left="8.0" right="8.0" />
+                                 </VBox.margin>
                               </TableView>
                            </children>
                            <padding>

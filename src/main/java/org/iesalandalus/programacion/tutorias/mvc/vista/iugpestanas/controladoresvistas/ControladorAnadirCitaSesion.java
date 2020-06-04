@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvista;
+package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas;
 
 
 
@@ -15,7 +15,9 @@ import org.iesalandalus.programacion.tutorias.mvc.controlador.IControlador;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Cita;
 import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Sesion;
+import org.iesalandalus.programacion.tutorias.mvc.modelo.dominio.Tutoria;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +28,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -36,44 +40,61 @@ public class ControladorAnadirCitaSesion implements Initializable{
 		private Sesion sesion;
 		public static final DateTimeFormatter FORMATO_HORA=DateTimeFormatter.ofPattern("HH:mm");
 		
-		private ObservableList<Alumno> alumnos = FXCollections.observableArrayList();
+		private ObservableList<Alumno> alumnos=FXCollections.observableArrayList();
+		private ObservableList<LocalTime>horarioCitasSesion=FXCollections.observableArrayList();
+		private ObservableList<Cita> citas=FXCollections.observableArrayList();
 		
 		private IControlador controladorMVC;
-		private ObservableList<Cita> citas;
+		
 	
-		@FXML private ListView<Alumno> lvAlumnos;
-		@FXML private ComboBox<LocalTime> cbHora;
-	    @FXML private Button btAceptar;
-	    @FXML private Button btCancelar;
-	  
+		@FXML
+		private TableView<Alumno> tvAlumnos;
+		@FXML
+		private TableColumn<Alumno, String> tcAlumno;
+		@FXML
+		private ComboBox<LocalTime> cbHora;
+		@FXML
+		private Button btAceptar;
+		@FXML
+		private Button btCancelar;
 	
-	    private class CeldaAlumno extends ListCell<Alumno>{
-	    	@Override
-	    	public void updateItem (Alumno alumno, boolean vacio){
-	    		super.updateItem(alumno, vacio);
-	    		if(vacio) {
-	    			setText("");
-	    		}else {
-	    			setText(alumno.getNombre());
-	    		}
-	    	}   	
-	    }
 	    
-	    @Override
+		@Override
 		public void initialize(URL location, ResourceBundle resources) {
-			cbHora.setDisable(true);
-			lvAlumnos.setItems(alumnos);
-			lvAlumnos.setCellFactory(l -> new CeldaAlumno());
-		} 
+		
+			
+			tcAlumno.setCellValueFactory(alumno -> new SimpleStringProperty(alumno.getValue().getNombre()));			
+			tvAlumnos.setItems(alumnos);
+			tvAlumnos.getSelectionModel().clearSelection();
+			
+			cbHora.getSelectionModel().clearSelection();
+			cbHora.setItems(horarioCitasSesion);
+
+		}
 		
 		public void setControladorMVC(IControlador controladorMVC) {
 			this.controladorMVC = controladorMVC;
 		}
+		
 
-	 @FXML
-	    void anadirCitaSesion(ActionEvent event) {
+		public void inicializa(ObservableList<Alumno> alumnos, ObservableList<Cita> citas, Sesion sesion) {
+			
+			this.alumnos.setAll(alumnos);			
+			this.citas = citas;
+			this.sesion=sesion;
+			
+			tvAlumnos.getSelectionModel().clearSelection();
+			
+			cbHora.getSelectionModel().clearSelection();
+			
+			setHoraCitas(sesion);
+			
+		}
 
-		 Cita cita = null;
+		@FXML
+		void anadirCitaSesion(ActionEvent event) {
+
+			Cita cita = null;
 			try {
 				cita = getCita();
 				controladorMVC.insertar(cita);
@@ -82,44 +103,36 @@ public class ControladorAnadirCitaSesion implements Initializable{
 				Dialogos.mostrarDialogoInformacion("Añadir Cita", "Cita añadida satisfactoriamente", propietario);
 			} catch (Exception e) {
 				Dialogos.mostrarDialogoError("Añadir Cita", e.getMessage());
-			}		 
-	    }
+			}
+		}
 		
 	    @FXML
 	    void cancelar(ActionEvent event) {
 	    	((Stage) btCancelar.getScene().getWindow()).close();
 	    }
 	
-	    public void inicializa(ObservableList<Alumno> alumnos, ObservableList<Cita> citas, Sesion sesion) {
-	    	this.citas=citas;
-	    	this.sesion=sesion;
-	    	lvAlumnos.setItems(alumnos);
-	    	lvAlumnos.getSelectionModel().clearSelection();
-	    	cbHora.setItems(getHoraCitas());
-	    }
+	  
 	    	
 		private Cita getCita() {
 			final DateTimeFormatter FORMATO_HORA= DateTimeFormatter.ofPattern("HH:mm");
-			Alumno alumno=lvAlumnos.getSelectionModel().getSelectedItem();
+			Alumno alumno=tvAlumnos.getSelectionModel().getSelectedItem();
 			LocalTime hora=LocalTime.parse(cbHora.getValue().format(FORMATO_HORA)); 
+			
 			return new Cita(alumno, sesion, hora);
 		}
 
-		
-		public ObservableList<LocalTime> getHoraCitas(){
-			List<LocalTime> horarioCitasSesionAl= new ArrayList<>();
-			int i=0;
+		public void setHoraCitas(Sesion sesion) {
+			List<LocalTime> horarioCitasSesionAl = new ArrayList<>();
 			LocalTime horaCita;
+			horaCita = sesion.getHoraInicio();
+
 			do {
-				horaCita=sesion.getHoraInicio().plusMinutes(i*sesion.getMinutosDuracion());
-				horaCita.format(FORMATO_HORA);
-				i++;
 				horarioCitasSesionAl.add(horaCita);
-			}while(
-				horaCita.isBefore(sesion.getHoraFin().minusMinutes(sesion.getMinutosDuracion()))
-				);
-			ObservableList<LocalTime>horarioCitasSesion=FXCollections.observableArrayList(horarioCitasSesionAl);
-			
-			return horarioCitasSesion;		
+				horaCita = horaCita.plusMinutes(sesion.getMinutosDuracion());
+
+			} while (horaCita.isBefore(sesion.getHoraFin()));// .minusMinutes(sesion.getMinutosDuracion())));
+
+			horarioCitasSesion.setAll(FXCollections.observableArrayList(horarioCitasSesionAl));
+
 		}
 }

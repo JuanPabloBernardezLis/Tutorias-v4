@@ -34,12 +34,13 @@ public class Sesion implements Serializable {
 	
 	
 	public Sesion(Tutoria tutoria, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, int minutosDuracion) {
-		
+				
+		setTutoria(tutoria);
 		setFecha(fecha);
 		setHoraInicio(horaInicio);
 		setHoraFin(horaFin);
 		setMinutosDuracion(minutosDuracion);
-		setTutoria(tutoria);
+		
 		
 		comprobarValidezSesion();
 	}
@@ -79,9 +80,7 @@ public class Sesion implements Serializable {
 		if(fecha==null) {
 			throw new NullPointerException("ERROR: La fecha no puede ser nula.");	
 		}
-		if(fecha.isBefore(LocalDate.now())||fecha.isEqual(LocalDate.now())) {
-			throw new IllegalArgumentException("ERROR: Las sesiones de deben planificar para fechas futuras.");	
-		}
+		
 		this.fecha = fecha;
 	}
 
@@ -115,8 +114,6 @@ public class Sesion implements Serializable {
 			throw new IllegalArgumentException("ERROR: La hora de fin no es válida.");
 		}
 	
-
-		
 		this.horaFin = horaFin;
 	}
 
@@ -147,16 +144,7 @@ public class Sesion implements Serializable {
 		return new Sesion(tutoria, fecha,HORA_COMIENZO_CLASES,HORA_FIN_CLASES,15);
 	}
 	
-	public LocalTime getHoraComienzoClases() {
-		return HORA_COMIENZO_CLASES;
-	}
-	
-	public LocalTime getHoraFinClases() {
-		return HORA_FIN_CLASES;
-	}
-	
-	
-	
+
 
 	@Override
 	public int hashCode() {

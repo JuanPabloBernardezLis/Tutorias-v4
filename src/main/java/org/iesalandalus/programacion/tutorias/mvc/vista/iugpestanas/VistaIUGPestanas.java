@@ -2,7 +2,7 @@ package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas;
 
 import org.iesalandalus.programacion.tutorias.mvc.controlador.IControlador;
 import org.iesalandalus.programacion.tutorias.mvc.vista.IVista;
-import org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvista.ControladorVentanaPrincipal;
+import org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas.ControladorVentanaPrincipal;
 import org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.utilidades.Dialogos;
 
 import javafx.application.Application;

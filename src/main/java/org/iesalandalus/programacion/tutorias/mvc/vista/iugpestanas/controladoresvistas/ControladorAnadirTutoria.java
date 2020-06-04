@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvista;
+package org.iesalandalus.programacion.tutorias.mvc.vista.iugpestanas.controladoresvistas;
 
 import java.net.URL;
 import java.util.ResourceBundle;

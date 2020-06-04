@@ -20,6 +20,7 @@ public class Profesor implements Serializable {
 
 	public Profesor(String nombre, String dni, String correo) {
 
+	
 		setNombre(nombre);
 		setDni(dni);
 		setCorreo(correo);
