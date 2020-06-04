@@ -15,10 +15,6 @@ public class Alumno  implements Serializable {
 	private String expediente;
 		
 
-	
-
-	
-	
 
 	public Alumno(String nombre, String correo) {
 		
@@ -116,8 +112,6 @@ public class Alumno  implements Serializable {
 			return expediente;
 		}
 
-		
-	
 
 		private static void incrementaUltimoIdentificador() {
 		ultimoIdentificador++;
