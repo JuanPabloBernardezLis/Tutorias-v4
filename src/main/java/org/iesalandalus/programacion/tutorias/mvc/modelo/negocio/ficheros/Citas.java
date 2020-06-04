@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -133,13 +134,28 @@ private List<Cita> coleccionCitas;
 			throw new NullPointerException("ERROR: No se puede insertar una cita nula.");
 		}
 		int indice = coleccionCitas.indexOf(cita);
-		if (indice == -1) {
+		if (indice == -1 && citaDuplicada(cita)==false) {
 			coleccionCitas.add(new Cita(cita));
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe una cita con esa hora.");
 		}		
 		
 	}
+	
+	private boolean citaDuplicada(Cita cita) {
+		boolean citaDuplicada=false;
+		Sesion sesion= cita.getSesion();
+		LocalTime hora=cita.getHora();
+		
+		for (Cita citaC : coleccionCitas) {
+			if (citaC.getSesion().equals(sesion) && citaC.getHora().equals(hora)) {
+				citaDuplicada=true;
+				}
+			}
+		return citaDuplicada;		
+	}
+	
+	
 	
 	@Override
 	public Cita buscar(Cita cita) {

@@ -148,7 +148,7 @@ public class Modelo implements IModelo {
 	@Override
 	public Tutoria buscar(Tutoria tutoria) {
 		if(tutoria==null)
-			throw new NullPointerException("ERROR: No se puede insertar un alumno nulo.");
+			throw new NullPointerException("ERROR: No se puede buscar una tutoría nula.");
 		
 		return tutorias.buscar(tutoria);
 	}

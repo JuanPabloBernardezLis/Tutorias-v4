@@ -29,9 +29,12 @@ dependencies {
     
     // Uso de Mockito
     testCompile "org.mockito:mockito-inline:+"
+    
+    // MogoDB Driver
+    compile 'org.mongodb:mongodb-driver-sync:4.0.2'
 }
 
-//AÃ±adido por mÃ­
+//Añadido por mí
 apply plugin: 'application'
 
 mainClassName = 'org.iesalandalus.programacion.tutorias.MainApp'
@@ -54,7 +57,7 @@ run {
 	doLast {
                 println ""
 		println "------------------------------------------------"
-		println "-------Finaliza ejecuciÃ³n Clase Principal-------"
+		println "-------Finaliza ejecución Clase Principal-------"
 		println "------------------------------------------------"
 		println ""
 	}*/
@@ -66,3 +69,4 @@ test {
         exceptionFormat = 'full'
     }
 }
+
