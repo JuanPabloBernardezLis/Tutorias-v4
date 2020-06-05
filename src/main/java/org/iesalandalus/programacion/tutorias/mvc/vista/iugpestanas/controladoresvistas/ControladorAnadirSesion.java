@@ -84,17 +84,17 @@ public class ControladorAnadirSesion implements Initializable {
 	
 	private void reset() {
 		cbHoraInicio.getSelectionModel().clearSelection();
-		cbHoraInicio.setValue(0);
+		cbHoraInicio.setValue(Sesion.getHoraComienzoClases().getHour());
 				
 		cbMinInicio.getSelectionModel().clearSelection();
-		cbMinInicio.setValue(0);
+		cbMinInicio.setValue(Sesion.getHoraComienzoClases().getMinute());
 		cbMinInicio.setItems(minutos);
 		
 		cbHoraFin.getSelectionModel().clearSelection();
-		cbHoraFin.setValue(0);
+		cbHoraFin.setValue(Sesion.getHoraFinClases().getHour());
 		
 		cbMinFin.getSelectionModel().clearSelection();
-		cbMinFin.setValue(0);
+		cbMinFin.setValue(Sesion.getHoraFinClases().getMinute());
 		cbMinFin.setItems(minutos);
 				
 		cbMinDuracion.getSelectionModel().clearSelection();
@@ -142,12 +142,12 @@ public class ControladorAnadirSesion implements Initializable {
 
 	public void setHoras() {
 		List<Integer> horasAL = new ArrayList<>();
-		int hora=0; //Intentar poner aquí el atributo HORA_COMIENZO_CLASES
+		int hora=Sesion.getHoraComienzoClases().getHour(); //Intentar poner aquí el atributo HORA_COMIENZO_CLASES
 		do {
 			horasAL.add(hora);
 			hora++;
 			
-		} while (hora <= 23);//Intentar poner aquí el atributo HORA_FIN_CLASES
+		} while (hora <= Sesion.getHoraFinClases().getHour());//Intentar poner aquí el atributo HORA_FIN_CLASES
 		
 		horas.setAll(FXCollections.observableArrayList(horasAL));
 		cbHoraInicio.setItems(horas);
@@ -174,6 +174,7 @@ public class ControladorAnadirSesion implements Initializable {
 
 	private Sesion getSesion() {
 		LocalDate fecha = dPFecha.getValue();
+		
 		horaInicio = LocalTime.of(cbHoraInicio.getValue(), cbMinInicio.getValue());
 		horaFin = LocalTime.of(cbHoraFin.getValue(), cbMinFin.getValue());
 		minutosDuracion = cbMinDuracion.getValue();

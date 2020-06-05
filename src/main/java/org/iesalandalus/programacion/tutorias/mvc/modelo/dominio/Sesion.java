@@ -145,6 +145,13 @@ public class Sesion implements Serializable {
 	}
 	
 
+	public static LocalTime getHoraComienzoClases() {
+		return HORA_COMIENZO_CLASES;
+	}
+
+	public static LocalTime getHoraFinClases() {
+		return HORA_FIN_CLASES;
+	}
 
 	@Override
 	public int hashCode() {
