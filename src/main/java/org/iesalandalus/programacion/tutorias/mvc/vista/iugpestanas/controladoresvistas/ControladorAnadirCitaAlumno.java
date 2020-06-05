@@ -106,6 +106,8 @@ public class ControladorAnadirCitaAlumno implements Initializable {
 			Stage propietario = ((Stage) btAceptar.getScene().getWindow());
 			Dialogos.mostrarDialogoInformacion("Añadir Cita", "Cita añadida satisfactoriamente", propietario);		
 		
+			
+			
 		} catch (Exception e) {
 			Dialogos.mostrarDialogoError("Añadir Cita", e.getMessage());
 		}
@@ -116,10 +118,11 @@ public class ControladorAnadirCitaAlumno implements Initializable {
     	((Stage) btCancelar.getScene().getWindow()).close();
     }
 
-    public void inicializa(ObservableList<Tutoria> tutorias, ObservableList<Sesion> sesiones, Alumno alumno, ObservableList<Cita> citasAlumno) {
+    public void inicializa(ObservableList<Tutoria> tutorias, ObservableList<Sesion> sesiones, Alumno alumno, ObservableList<Cita> citas) {
     	this.tutorias.setAll(controladorMVC.getTutorias());
     	this.sesiones.setAll(controladorMVC.getSesiones());    	
     	this.alumno=alumno;
+    	this.citas = citas;
     	tvTutorias.getSelectionModel().clearSelection();
 
      }

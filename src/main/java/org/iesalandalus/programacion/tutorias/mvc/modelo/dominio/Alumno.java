@@ -22,7 +22,14 @@ public class Alumno  implements Serializable {
 		setCorreo(correo); 
 		setExpediente();
 	}
-
+	
+	
+	public Alumno(String nombre, String correo, int identificador) {
+		
+		setNombre(nombre);
+		setCorreo(correo); 
+		setExpediente(identificador);
+	}
 
 	public Alumno(Alumno a) {
 		
@@ -126,26 +133,48 @@ public class Alumno  implements Serializable {
 		for (int i = 0; i < palabras.length; i++) {
 			if (!palabras[i].equals(""))
 				iniciales = iniciales + palabras[i].charAt(0);
-		}
-		
+		}	
+		iniciales=eliminaTildes(iniciales);
 		return iniciales;
 		
-		
+	}
+	
+
+	public static String eliminaTildes(String input) {
+	    
+	    String original = "áàäéèëíìïóòöúùuñÁÀÄÉÈËÍÌÏÓÒÖÚÙÜÑçÇ";
+	    
+	    String ascii = "aaaeeeiiiooouuunAAAEEEIIIOOOUUUNcC";
+	    String output = input;
+	    for (int i=0; i<original.length(); i++) {
+	      
+	        output = output.replace(original.charAt(i), ascii.charAt(i));
+	    }
+	    return output;
 	}
 
 	private void setExpediente() {
 		
-		if (ultimoIdentificador<=Alumnos.getMaxId()) {
-			
-			ultimoIdentificador=Alumnos.getMaxId()+1;	
-		}
+		incrementaUltimoIdentificador();
 		
 		
 		this.expediente=PREFIJO_EXPEDIENTE + getIniciales() +"_"+ ultimoIdentificador;
 		
-		incrementaUltimoIdentificador();
+		
 	
 	}
+	
+
+	private void setExpediente(int identificador) {
+		if (identificador<=0) {
+			throw new NullPointerException("EROR: El identificador debe ser mayor que cero.");
+		}
+		
+		
+		this.expediente=PREFIJO_EXPEDIENTE + getIniciales() +"_"+ identificador;
+		
+	}
+	
 ;
 
 	@Override

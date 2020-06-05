@@ -133,7 +133,7 @@ public class MongoDB {
 		if (documentoAlumno == null) {
 			return null;
 		}
-		return new Alumno(documentoAlumno.getString(NOMBRE), documentoAlumno.getString(CORREO));
+		return new Alumno(documentoAlumno.getString(NOMBRE), documentoAlumno.getString(CORREO), Integer.valueOf(documentoAlumno.getString(EXPEDIENTE).split("_")[2]));
 	}
 	
 	public static Document getDocumento(Tutoria tutoria) {

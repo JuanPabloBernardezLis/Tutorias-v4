@@ -107,6 +107,7 @@ public class ControladorVentanaPrincipal implements Initializable {
 	@FXML private TableView<Cita> tvCitasAlumno;
 	@FXML private TableColumn<Cita, String> tcFechaCitaAlumno;
 	@FXML private TableColumn<Cita, String> tcHoraCitaAlumno;
+	@FXML private TableColumn<Cita, String> tcProfesorCitaAlumno;
 	
 	@FXML private TableView<Profesor> tvProfesores;
 	@FXML private TableColumn<Profesor, String> tcDniProfesor;
@@ -151,7 +152,9 @@ public class ControladorVentanaPrincipal implements Initializable {
     	
     	tcFechaCitaAlumno.setCellValueFactory(cita -> new SimpleStringProperty(FORMATO_FECHA.format(cita.getValue().getSesion().getFecha())));
     	tcHoraCitaAlumno.setCellValueFactory(cita -> new SimpleStringProperty(FORMATO_HORA.format(cita.getValue().getHora())));
-     	tvCitasAlumno.setItems(citasAlumno);
+    	tcProfesorCitaAlumno.setCellValueFactory(cita -> new SimpleStringProperty(cita.getValue().getSesion().getTutoria().getProfesor().getNombre()));
+
+    	tvCitasAlumno.setItems(citasAlumno);
     	
      	tcDniProfesor.setCellValueFactory(profesor -> new SimpleStringProperty(profesor.getValue().getDni()));
      	tcNombreProfesor.setCellValueFactory(profesor -> new SimpleStringProperty(profesor.getValue().getNombre()));
